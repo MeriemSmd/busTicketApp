@@ -1,0 +1,80 @@
+<div class="flex-container-end">
+  <button mat-raised-button color="primary" [routerLink]="['/reservation-list']"> My Reservations
+  </button>
+</div>
+<div *ngIf="reservationId == 0; else update">
+  <h2> New Reservation </h2>
+</div>
+<ng-template #update>
+  <h2> Update my Reservation </h2>
+</ng-template>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div *ngIf="step ===1">
+    <mat-form-field>
+      <mat-label>Reservation date</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="date">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+      <!-- Checkbox Column -->
+      <ng-container matColumnDef="select">
+        <th mat-header-cell *matHeaderCellDef>
+          <mat-checkbox (change)="masterToggle($event)"></mat-checkbox>
+        </th>
+        <td mat-cell *matCellDef="let row">
+          <mat-checkbox (change)="onCheckboxChange($event, row)" [checked]="checkedValue(row)">
+          </mat-checkbox>
+        </td>
+      </ng-container>
+
+      <!-- destination Column -->
+      <ng-container matColumnDef="destination">
+        <th mat-header-cell *matHeaderCellDef>Destination</th>
+        <td mat-cell *matCellDef="let row">{{ row.destination }}</td>
+      </ng-container>
+      <!-- destination Column -->
+      <ng-container matColumnDef="startHour">
+        <th mat-header-cell *matHeaderCellDef>Start Hour</th>
+        <td mat-cell *matCellDef="let row">{{ row.startHour }}</td>
+      </ng-container>
+      <!-- price Column -->
+      <ng-container matColumnDef="price">
+        <th mat-header-cell *matHeaderCellDef>Price</th>
+        <td mat-cell *matCellDef="let row">{{ row.price }}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <div class="flex-container-end">
+      <button mat-raised-button color="primary" (click)="toStep(2)" [disabled]="selectedItems.size === 0">Next</button>
+    </div>
+  </div>
+  <div *ngIf="step === 2">
+    <mat-radio-group aria-label="Select an option" formControlName="paymentType" (change)="onPaymentTypeChange()">
+      <mat-radio-button color="primary" value="{{PaymentType.CREDIT_CARD}}">Credit card </mat-radio-button>
+      <mat-radio-button color="primary" value="{{PaymentType.PAYPAL}}">Paypal </mat-radio-button>
+    </mat-radio-group>
+    <div class="inputs">
+      <mat-form-field *ngIf="form.get('paymentType')?.value == PaymentType.PAYPAL">
+        <mat-label>Mail</mat-label>
+        <input matInput formControlName="mail" />
+      </mat-form-field>
+      <mat-form-field *ngIf="form.get('paymentType')?.value == PaymentType.CREDIT_CARD">
+        <mat-label>Card Number</mat-label>
+        <input matInput formControlName="cardNumber" />
+      </mat-form-field>
+    </div>
+    <div class="flex-container-end">
+      <button mat-raised-button color="primary" (click)="toStep(1)">Previous</button>
+      <button mat-raised-button color="primary" (click)="onSubmit" [disabled]="!form.valid">Enregistrer</button>
+
+    </div>
+
+
+  </div>
+</form>

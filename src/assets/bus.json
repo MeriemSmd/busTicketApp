@@ -1,0 +1,16 @@
+[
+    {
+        "id": 1,
+        "nbrSeats": 100,
+        "startHour": 6,
+        "price": 2.50,
+        "destination": "Dest A/B"
+    },
+    {
+        "id": 2,
+        "nbrSeats": 150,
+        "startHour": 5,
+        "price": 3.50,
+        "destination": "Dest B/C"
+    }
+]

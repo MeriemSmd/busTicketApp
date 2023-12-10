@@ -1,0 +1,12 @@
+::ng-deep .mat-mdc-radio-button~.mat-mdc-radio-button {
+    margin-left: 16px;
+   
+}
+::ng-deep .mat-mdc-radio-button .mdc-form-field {
+    color: black !important;
+    --mdc-radio-unselected-icon-color: grey
+}
+.inputs{
+background-color: white;
+margin: 1em;
+}
